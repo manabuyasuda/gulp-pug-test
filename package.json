@@ -4,7 +4,7 @@
   "description": "GulpでPugを実行するためのテスト環境です。",
   "main": "index.js",
   "scripts": {
-    "default": "gulp"
+    "start": "gulp"
   },
   "keywords": [
     "gulp",
