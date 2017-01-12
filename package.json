@@ -1,14 +1,17 @@
 {
   "name": "gulp-pug-test",
   "version": "1.0.0",
-  "description": "",
+  "description": "GulpでPugを実行するためのテスト環境です。",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "default": "gulp"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "gulp",
+    "pug"
+  ],
+  "author": "Manabu Yasuda",
+  "license": "MIT",
   "devDependencies": {
     "browser-sync": "^2.18.5",
     "gulp": "^3.9.1",

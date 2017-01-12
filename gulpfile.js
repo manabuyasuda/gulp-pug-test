@@ -7,6 +7,9 @@ var plumber = require('gulp-plumber');
 var notify = require("gulp-notify");
 var browserSync = require('browser-sync');
 
+/**
+ * 開発用のディレクトリを指定します。
+ */
 var src = {
   // 出力対象は`_`で始まっていない`.pug`ファイル。
   'html': ['src/**/*.pug', '!' + 'src/**/_*.pug'],
@@ -16,6 +19,9 @@ var src = {
   'js': 'src/**/*.js',
 };
 
+/**
+ * 出力するディレクトリを指定します。
+ */
 var dest = {
   'root': 'dest/',
   'html': 'dest/'
@@ -31,17 +37,18 @@ gulp.task('html', function() {
     'site': JSON.parse(fs.readFileSync(src.json + 'site.json'))
   }
   return gulp.src(src.html)
+  // コンパイルエラーを通知します。
   .pipe(plumber({errorHandler: notify.onError("Error: <%= error.message %>")}))
+  // 各ページごとの`/`を除いたルート相対パスを取得します。
   .pipe(data(function(file) {
-    // 各ページごとの`/`を除いたルート相対パスを取得します。
     locals.relativePath = path.relative(file.base, file.path.replace(/.pug$/, '.html'));
       return locals;
   }))
   .pipe(pug({
-    // JSONファイルをPugに渡します。
+    // JSONファイルとルート相対パスの情報を渡します。
     locals: locals,
     // Pugファイルのルートディレクトリを指定します。
-    // `/assets/pug/_layout`のようにルート相対パスを使います。
+    // `/_includes/_layout`のようにルート相対パスで指定することができます。
     basedir: 'src',
     // Pugファイルの整形。
     pretty: true
@@ -51,7 +58,7 @@ gulp.task('html', function() {
 });
 
 /**
- * cssファイルをdestディレクトリに出力します。
+ * cssファイルをdestディレクトリに出力（コピー）します。
  */
 gulp.task('css', function() {
   return gulp.src(src.css, {base: src.root})
@@ -60,7 +67,7 @@ gulp.task('css', function() {
 });
 
 /**
- * jsファイルをdestディレクトリに出力します。
+ * jsファイルをdestディレクトリに出力（コピー）します。
  */
 gulp.task('js', function() {
   return gulp.src(src.js, {base: src.root})
@@ -80,8 +87,17 @@ gulp.task('browser-sync', function() {
   });
 });
 
+/**
+ * PugのコンパイルやCSSとjsの出力、browser-syncのリアルタイムプレビューを実行します。
+ */
 gulp.task('watch', ['html', 'css', 'js', 'browser-sync'], function() {
   gulp.watch(src.html, ['html']);
   gulp.watch(src.css, ['css']);
   gulp.watch(src.js, ['js']);
 });
+
+/**
+ * 開発に使うタスクです。
+ * package.jsonに設定をして、`npm run default`で実行できるようにしています。
+ */
+gulp.task('default', ['watch']);
