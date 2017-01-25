@@ -13,6 +13,7 @@ var browserSync = require('browser-sync');
 var src = {
   // 出力対象は`_`で始まっていない`.pug`ファイル。
   'html': ['src/**/*.pug', '!' + 'src/**/_*.pug'],
+  'watch_html': 'src/**/*.pug', // _で始まっているインクルードファイルを編集した時もコンパイルされるように、監視対象は_ファイルも含める。
   // JSONファイルのディレクトリを変数化。
   'json': 'src/_data/',
   'css': 'src/**/*.css',
@@ -91,7 +92,7 @@ gulp.task('browser-sync', function() {
  * PugのコンパイルやCSSとjsの出力、browser-syncのリアルタイムプレビューを実行します。
  */
 gulp.task('watch', ['html', 'css', 'js', 'browser-sync'], function() {
-  gulp.watch(src.html, ['html']);
+  gulp.watch(src.watch_html, ['html']);
   gulp.watch(src.css, ['css']);
   gulp.watch(src.js, ['js']);
 });
