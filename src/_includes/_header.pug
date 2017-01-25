@@ -1,3 +1,15 @@
 // header
-p Header
+.row
+  .columns.medium-2
+    h1 sitelogo
+  .columns.medium-10
+    nav
+      ul
+        li
+          a(href=relativeRoot + "about/") About
+          ul
+            li: a(href=relativeRoot + "about/member/") Member
+        li: a(href=relativeRoot + "products/") Products
+        - for (var i = 1; i <=5; i++)
+          li: a(href="#") dummy
 // /header
